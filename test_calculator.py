@@ -3,7 +3,7 @@ from calculator import is_positive
 
 def test_positive_number():
     """Tests if a positive number is correctly identified."""
-    assert is_positive(5) == False
+    assert is_positive(5) == True
 
 def test_negative_number():
     """Tests if a negative number is correctly identified."""
