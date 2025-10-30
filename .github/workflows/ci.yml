@@ -1,0 +1,63 @@
+# .github/workflows/ci.yml
+
+# This is just a name for your workflow.
+# You'll see this name on the "Actions" tab in GitHub.
+name: Python CI Build and Test
+
+#-------------------------------------------------
+
+# This is the "WHEN" trigger.
+# It tells GitHub WHEN to run this workflow.
+on:
+  push:
+    branches: [ main ]  # Run it every time you push to the 'main' branch.
+
+#-------------------------------------------------
+
+# This is the "WHAT" part.
+# It defines the "jobs" to do. You can have many jobs.
+jobs:
+  # We'll call our first (and only) job "build".
+  build:
+
+    # This is the "WHERE".
+    # It tells GitHub to use a fresh, new virtual computer
+    # that runs the latest version of Ubuntu (Linux).
+    runs-on: ubuntu-latest
+
+#-------------------------------------------------
+
+    # This is the "HOW".
+    # These are the actual step-by-step commands to run.
+    steps:
+
+      # Step 1: Get the code
+      # This command checks out your repository code
+      # onto the virtual computer.
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up the environment
+      # This command installs the Python language itself
+      # onto the virtual computer.
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # Step 3: Install project needs
+      # This runs a command-line "pip install" to get
+      # pytest (for testing) and pytest-cov (for coverage).
+      - name: Install dependencies
+        run: |
+          pip install pytest
+          pip install pytest-cov
+
+      # Step 4: Run the tests! 
+      # This is the most important step. It runs your
+      # test file. If any test fails, this step will
+      # "fail", and GitHub will mark your whole build
+      # with a red "X".
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=calculator test_calculator.py
